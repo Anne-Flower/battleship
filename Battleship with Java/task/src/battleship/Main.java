@@ -8,25 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
-        int cols = 10;
-
-        String[] dico = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
-
-        for(int i = 0; i < cols; i++) {
-            if (i == 0) {
-                System.out.print("  ");
-            }
-            System.out.print(i + 1 + " ");
-        }
-        System.out.println();
-        for(int j = 0; j <= dico.length - 1; j++) {
-            System.out.print(dico[j] + " ");
-            for(int d = 0; d < dico.length; d ++) {
-                System.out.print("~" + " ");
-            }
-            System.out.println();
-        }
+        new SeaBoard();
 
         System.out.println("Enter the coordinates of the ship:");
         String beginning = scanner.next();
@@ -36,7 +18,6 @@ public class Main {
         displayParts(beginning, end);
 
         scanner.close();
-
     }
 
     private static boolean isValidLength(String start, String end) {

@@ -4,4 +4,6 @@ files:
     visible: true
   - name: test/Tests.java
     visible: false
+  - name: src/battleship/testClass.java
+    visible: true
 feedback_link: https://hyperskill.org/projects/383/stages/2282/implement#comment
