@@ -3,7 +3,7 @@ hyperskill_project:
   ide_files: https://hyperskill.org/api/projects/383/additional-files/additional_files.json
   is_template_based: false
   use_ide: true
-update_date: "Wed, 18 Feb 2026 13:09:57 UTC"
+update_date: "Sat, 28 Feb 2026 10:47:25 UTC"
 stages:
   - id: 2281
     step: 35304
@@ -41,7 +41,7 @@ topics:
       theory_id: 3518
     - title: Comments
       theory_id: 3520
-    - title: Reading user's input with Scanner
+    - title: Reading user input with Scanner
       theory_id: 9055
     - title: Coding style conventions
       theory_id: 12411
