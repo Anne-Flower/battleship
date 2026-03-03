@@ -17,19 +17,24 @@ public class Main {
                 new Ship(2, "Destroyer")
         };
 
-        for(int i = 0; i < playerOneShips.length; i++) {
-            placeShipPrompt(playerOneShips[i]);
-            String startCoordinate = scanner.next();
-            String endCoordinate = scanner.next();
+//        for(int i = 0; i < playerOneShips.length; i++) {
+//            placeShipPrompt(playerOneShips[i]);
+//            String startCoordinate = scanner.next();
+//            String endCoordinate = scanner.next();
+//        }
+        String coordinate = scanner.next();
+        boolean isValid = isValidCoordinate(coordinate);
+        if (isValid) {
+            System.out.println("true");
         }
-
+        else System.out.println("false");
     }
     
     public static void placeShipPrompt(Ship ship) {
         System.out.format("Enter the coordinates of the %s (%d cells):\n", ship.name, ship.cells);
     }
 
-    public int[] parseStringCoordinate(String stringCoordinate) {
+    public static int[] parseStringCoordinate(String stringCoordinate) {
         HashMap<String, Integer> letterMapping = new HashMap<>();
         letterMapping.put("A", 0);
         letterMapping.put("B", 1);
@@ -42,7 +47,6 @@ public class Main {
         letterMapping.put("I", 8);
         letterMapping.put("J", 9);
 
-
         String letter = String.valueOf(stringCoordinate.charAt(0));
         int number = Integer.parseInt(stringCoordinate.substring(1));
         int letterDico = letterMapping.get(letter);
@@ -50,7 +54,38 @@ public class Main {
         return coordinate;
     }
 
-    public void isValidCoordinate(String startCoordinate, String endCoordinate) {
+    public static boolean isInteger(String num) {
+        String nums = "0123456789";
+        String[] numInArray = num.split("");
+        for (String digit : numInArray) {
+            if (!nums.contains(digit)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isValidCoordinate(String coordinate) {
+        String alphabet = "ABCDEFGHIJ";
+        String secondElement = coordinate.substring(1);
+
+        String[] coordinateInArray = coordinate.split("");
+        if (!alphabet.contains(coordinateInArray[0])) {
+            return false;
+        }
+        if (!isInteger(secondElement)) {
+            return false;
+        }
+
+        if (Integer.parseInt(secondElement) > 10) {
+            return false;
+        }
+        if (Integer.parseInt(secondElement) < 0) {
+            return false;
+        }
+
+
+        return true;
     }
     
 
