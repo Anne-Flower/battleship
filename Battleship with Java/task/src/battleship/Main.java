@@ -1,7 +1,6 @@
 package battleship;
 
 
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.HashMap;
 
@@ -12,13 +11,13 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Ship[] playerOneShips = {
                 new Ship(5, "Aircraft Carrier"),
-//                new Ship(4, "Battleship"),
-//                new Ship(3, "Submarine"),
-//                new Ship(3, "Cruiser"),
-//                new Ship(2, "Destroyer")
+                new Ship(4, "Battleship"),
+                new Ship(3, "Submarine"),
+                new Ship(3, "Cruiser"),
+                new Ship(2, "Destroyer")
         };
         SeaBoard mySeaBoard = new SeaBoard();
-        mySeaBoard.display();
+        mySeaBoard.display(false);
 
         for (Ship ship : playerOneShips) {
             ValidationResult coordResult = new ValidationResult(false);
@@ -39,7 +38,7 @@ public class Main {
                     }
                     placeResult = mySeaBoard.placeShip(ship, startInt, endInt);
                     if (placeResult.isValid) {
-                        mySeaBoard.display();
+                        mySeaBoard.display(false);
                     } else {
                         System.out.println(placeResult.error);
                     }
@@ -49,17 +48,19 @@ public class Main {
             }
         }
         gamePrompt();
-        mySeaBoard.display();
+        mySeaBoard.display(true);
         System.out.println("Take a shot!");
         String shot = scanner.next();
         int[] shotCoord = parseStringCoordinate(shot);
         if (mySeaBoard.placeMissile(shotCoord)) {
-            mySeaBoard.display();
+            mySeaBoard.display(true);
             System.out.println("You hit a ship!");
         } else {
-            mySeaBoard.display();
+            mySeaBoard.display(true);
             System.out.println("You missed!");
         }
+        mySeaBoard.display(false);
+
     }
 
     public static void placeShipPrompt(Ship ship) {

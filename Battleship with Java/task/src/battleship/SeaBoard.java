@@ -86,7 +86,7 @@ public class SeaBoard {
     }
 
     public boolean isMissile(int[] coord) {
-        for(int[] missile : missiles ) {
+        for (int[] missile : missiles) {
             if (coordEqual(missile, coord)) {
                 return true;
             }
@@ -94,7 +94,7 @@ public class SeaBoard {
         return false;
     }
 
-    public void display() {
+    public void display(boolean isFogWar) {
         System.out.print("  ");
         for (int i = 0; i < cols; i++) {
             System.out.print(i + 1 + " ");
@@ -108,8 +108,10 @@ public class SeaBoard {
                 if (isShip(coord)) {
                     if (isMissile(coord)) {
                         System.out.print("X" + " ");
-                    } else {
+                    } else if (!isFogWar) {
                         System.out.print("O" + " ");
+                    } else {
+                        System.out.print("~" + " ");
                     }
                 } else if (isMissile(coord)) {
                     System.out.print("M" + " ");
@@ -120,4 +122,5 @@ public class SeaBoard {
             System.out.println();
         }
     }
+
 }
