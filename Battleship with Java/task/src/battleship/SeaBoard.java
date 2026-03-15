@@ -89,10 +89,52 @@ public class SeaBoard {
         return false;
     }
 
+    public ShipInfo findShip(int[] coord) {
+        for (ShipInfo shipInfo : ships) {
+            for (int[] part : shipInfo.parts) {
+                if (coordEqual(part, coord)) {
+                    return shipInfo;
+                }
+            }
+        }
+        throw new RuntimeException("no ship found");
+    }
+
+
+    public boolean isShipSunk(int[] coord) {
+        for (ShipInfo shipInfo : ships) {
+            for (int[] part : shipInfo.parts) {
+                if (coordEqual(part, coord)) {
+                    shipInfo.hitCounter += 1;
+                    if (shipInfo.hitCounter == shipInfo.ship.getCells()) {
+                        shipInfo.sunk = true;
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isAllShipsSunk(){
+        for(ShipInfo ship : ships) {
+            if (!ship.sunk) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public MissileResult placeMissile(int[] coord) {
         missiles.add(coord);
         if (isShip(coord)) {
-            return MissileResult.ALL_SHIPS_SUNK; // MISSILE_HIT : detect when all ships and one ship are sunk
+            if (isShipSunk(coord)) {
+                if (isAllShipsSunk()) {
+                    return MissileResult.ALL_SHIPS_SUNK;
+                }
+                return MissileResult.SHIP_SUNK;
+            }
+            return MissileResult.MISSILE_HIT;
         }
         return MissileResult.MISSILE_MISSED;
     }

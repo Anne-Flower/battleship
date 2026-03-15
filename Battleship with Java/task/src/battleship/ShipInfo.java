@@ -5,6 +5,8 @@ import java.util.Arrays;
 public class ShipInfo {
     Ship ship;
     int[][] parts;
+    int hitCounter;
+    boolean sunk;
 
     private int[][] calculParts(int[] startCoord, int[] endCoord, int length) {
         int[][] parts = new int[length][2];
@@ -45,6 +47,8 @@ public class ShipInfo {
     public ShipInfo(Ship ship, int[] startCoord, int[] endCoord) {
         this.ship = ship;
         this.parts = calculParts(startCoord, endCoord, ship.getCells());
+        this.hitCounter = 0;
+        this.sunk = false;
     }
 
 
