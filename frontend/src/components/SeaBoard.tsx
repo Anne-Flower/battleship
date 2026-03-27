@@ -1,4 +1,3 @@
-import React from "react";
 import type { Coordinates, Missile, ShipInfo } from "../types/SeaBoardTypes";
 
 type SeaBoardProps = {
@@ -17,6 +16,7 @@ function isShip(coord: Coordinates, ships: ShipInfo[]) {
   }
   return false;
 }
+
 function isMissile(coord: Coordinates, missiles: Missile[]) {
   for (const missile of missiles) {
     if (missile[0] === coord[0] && missile[1] === coord[1]) {
@@ -26,9 +26,9 @@ function isMissile(coord: Coordinates, missiles: Missile[]) {
   return false;
 }
 
-function isCoule(coord: Coordinates, ships: ShipInfo[]){
-  for(const ship of ships) {
-    for(const part of ship.parts) {
+function isCoule(coord: Coordinates, ships: ShipInfo[]) {
+  for (const ship of ships) {
+    for (const part of ship.parts) {
       if (part === coord) {
         return true;
       }
@@ -37,10 +37,9 @@ function isCoule(coord: Coordinates, ships: ShipInfo[]){
   return false;
 }
 
-
 function isAllCoule(coord: Coordinates, ships: ShipInfo[]) {
   for (const ship of ships) {
-    if(isCoule(coord, ships)) {
+    if (isCoule(coord, ships)) {
       return true;
     }
   }
@@ -58,8 +57,7 @@ function getCaseColor(
     return colors.missed;
   } else if (isShip(coord, ships)) {
     return colors.boats;
-  }
-  else if (isAllCoule(coord, ships)) {
+  } else if (isAllCoule(coord, ships)) {
     return colors.coule;
   }
 }
@@ -73,12 +71,23 @@ const colors = {
   boats: "",
 };
 
+// function FetchData() {
+//   const [ships, setShips] = useState([]);
+//   const [missiles, setMissiles] = useState([]);
+
+//   useEffect(() => {
+//     getPlayerState().then((data) => {
+//       setShips(data.ships);
+//       setMissiles(data.missiles);
+//     });
+//   }, []);
+// }
 const SeaBoard = ({ name, missiles, ships }: SeaBoardProps) => {
   const letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
 
   return (
     <>
-      <div className="pt-48"> 
+      <div className="pt-48">
         <h1 className="text-indigo-800 text-2xl font-semibold pb-4">{name}</h1>
         <div className="flex justify-center bg-violet-50">
           <section className="grid grid-cols-11 w-[510px]">
@@ -107,7 +116,11 @@ const SeaBoard = ({ name, missiles, ships }: SeaBoardProps) => {
                     key={letter + j}
                     className={`w-12 h-12 border border-black ${getCaseColor([i, j], ships, missiles)}`}
                   >
-                    {isShip([i, j], ships) ? <img src={boatImage}></img> : <div></div>}
+                    {isShip([i, j], ships) ? (
+                      <img src={boatImage}></img>
+                    ) : (
+                      <div></div>
+                    )}
                   </div>
                 ))}
               </>

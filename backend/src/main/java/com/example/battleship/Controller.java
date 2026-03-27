@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,11 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 // import org.springframework.http.ResponseEntity;;
 
 @RestController
-public class HelloController {
+public class Controller {
 
   private List<Ship> ships = new ArrayList<Ship>();
+  private final GameService gameService;
 
+  public Controller(GameService gameService) {
+    this.gameService = gameService;
+  }
 
+//GET
   @GetMapping("/")
   public String index() {
     return "Greetings from Spring Boot!";
@@ -28,6 +34,12 @@ public class HelloController {
     return ships;
   }
 
+  @GetMapping("/player-state/{id}")
+  public PlayerState playerState(@PathVariable int id) {
+    return gameService.getPlayerState();
+  }
+
+//POST
   @PostMapping("/ship")
   public Ship addShip(@RequestBody Ship ship) {
     ships.add(ship);

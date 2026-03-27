@@ -1,0 +1,153 @@
+package com.example.battleship;
+
+import java.util.Scanner;
+import java.util.HashMap;
+
+public class Utils {
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+        Ship[] shipsToPlace = {
+                new Ship(5, "Aircraft Carrier"),
+                new Ship(4, "Battleship"),
+                new Ship(3, "Submarine"),
+                new Ship(3, "Cruiser"),
+                new Ship(2, "Destroyer")
+        };
+
+        //place all ships for both players
+        Player playerOne = new Player("Player 1");
+        Player playerTwo = new Player("Player 2");
+        playerOne.placeShips(shipsToPlace);
+
+        waitForEnterKey();
+        playerTwo.placeShips(shipsToPlace);
+        waitForEnterKey();
+
+        //war game with bullets start
+        Player activePlayer = playerOne;
+        Player otherPlayer = playerTwo;
+        SeaBoard.MissileResult myResult = SeaBoard.MissileResult.START;
+        while(SeaBoard.MissileResult.ALL_SHIPS_SUNK != myResult) {
+            displayGame(activePlayer, otherPlayer);
+            activePlayer.yourTurn();
+            SeaBoard.MissileResult result = activePlayer.placeMissile(otherPlayer.seaBoard);
+            displayHitOrMissedMessage(result);
+            waitForEnterKey();
+            myResult = result;
+
+            if (activePlayer == playerOne) {
+                otherPlayer = playerOne;
+                activePlayer = playerTwo;
+            }
+            else {
+                activePlayer = playerOne;
+                otherPlayer = playerTwo;
+            }
+        }
+
+    }
+
+    public static void displayHitOrMissedMessage(SeaBoard.MissileResult myMissileResult){
+        if (SeaBoard.MissileResult.MISSILE_HIT == myMissileResult) {
+            System.out.println("You hit a ship!");
+        }
+        else if (SeaBoard.MissileResult.MISSILE_MISSED == myMissileResult) {
+            System.out.println("You missed!");
+        }
+        else if (SeaBoard.MissileResult.SHIP_SUNK == myMissileResult) {
+            System.out.println("You sank a ship! Specify a new target:");
+        }
+        else if (SeaBoard.MissileResult.ALL_SHIPS_SUNK == myMissileResult) {
+            System.out.println("You sank the last ship. You won. Congratulations!");
+        }
+    }
+
+    public static void displayGame(Player active, Player other) {
+        other.seaBoard.display(true);
+        System.out.println("---------------------");
+        active.seaBoard.display(false);
+    }
+
+    public static void enterPrompt() {
+        System.out.format("Press Enter and pass the move to another player\n");
+    }
+
+    public static void waitForEnterKey() {
+        enterPrompt();
+        Scanner scanner = new Scanner(System.in);
+        String readEnterKey = scanner.nextLine();
+        while (!readEnterKey.isEmpty()) {
+            enterPrompt();
+            readEnterKey = scanner.nextLine();
+        }
+    }
+
+    public static int[] parseStringCoordinate(String stringCoordinate) {
+        HashMap<String, Integer> letterMapping = new HashMap<>();
+        letterMapping.put("A", 0);
+        letterMapping.put("B", 1);
+        letterMapping.put("C", 2);
+        letterMapping.put("D", 3);
+        letterMapping.put("E", 4);
+        letterMapping.put("F", 5);
+        letterMapping.put("G", 6);
+        letterMapping.put("H", 7);
+        letterMapping.put("I", 8);
+        letterMapping.put("J", 9);
+
+        String letter = String.valueOf(stringCoordinate.charAt(0));
+        int number = Integer.parseInt(stringCoordinate.substring(1)) - 1;
+        int letterDico = letterMapping.get(letter);
+        int[] coordinate = {letterDico, number};
+        return coordinate;
+    }
+
+    public static boolean isInteger(String num) {
+        String nums = "0123456789";
+        String[] numInArray = num.split("");
+        for (String digit : numInArray) {
+            if (!nums.contains(digit)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isValidCoordinate(String coordinate) {
+        String alphabet = "ABCDEFGHIJ";
+        String secondElement = coordinate.substring(1);
+
+        String[] coordinateInArray = coordinate.split("");
+        if (!alphabet.contains(coordinateInArray[0])) {
+            return false;
+        }
+        if (!isInteger(secondElement)) {
+            return false;
+        }
+
+        if (Integer.parseInt(secondElement) > 10) {
+            return false;
+        }
+        if (Integer.parseInt(secondElement) < 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static int calculateLength(int[] start, int[] end) {
+        if (start[0] == end[0]) {
+            int calcul = Math.abs(start[1] - end[1]);
+            return calcul + 1;
+        }
+        if (start[1] == end[1]) {
+            int calcul = Math.abs(start[0] - end[0]);
+            return calcul + 1;
+        }
+        throw new RuntimeException("invalid coordinates");
+    }
+
+
+}
+
