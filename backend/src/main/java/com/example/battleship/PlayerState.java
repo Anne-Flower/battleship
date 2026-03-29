@@ -7,24 +7,16 @@ enum GameState {
   PLACE_SHIP, PLAYER_ONE_TURN, PLAYER_TWO_TURN, GAME_END
 }
 
-
 public class PlayerState {
-
   GameState gameState = GameState.PLACE_SHIP;
   SeaBoard seaBoard;
   ArrayList<Ship> shipsToPlace = new ArrayList<>();
 
-
   public PlayerState() {
-    Ship ship1 = new Ship(3, "ship1");
-    int[] myMissile = new int[] { 2, 3 };
     this.seaBoard = new SeaBoard();
-    seaBoard.placeMissile(myMissile);
-    seaBoard.placeShip(ship1, new int[] { 2, 3 }, new int[] { 2, 5 });
-    
-    shipsToPlace.add( new Ship(5, "Aircraft Carrier"));
-    shipsToPlace.add( new Ship(4, "Battleship"));
-    shipsToPlace.add( new Ship(3, "Submarine"));
+    // shipsToPlace.add( new Ship(5, "Aircraft Carrier"));
+    // shipsToPlace.add( new Ship(4, "Battleship"));
+    // shipsToPlace.add( new Ship(3, "Submarine"));
     shipsToPlace.add( new Ship(3, "Cruiser"));
     shipsToPlace.add( new Ship(2, "Destroyer"));
 
@@ -35,6 +27,9 @@ public class PlayerState {
   }
 
   public Ship getShipToPlace() {
+    if (shipsToPlace.size() == 0) {
+      return null;
+    }
     return shipsToPlace.getFirst();
   }
 
@@ -42,6 +37,9 @@ public class PlayerState {
     Ship ship = shipsToPlace.getFirst();
     this.seaBoard.placeShip(ship, coordStart, coordEnd);
     shipsToPlace.removeFirst();
+    if (shipsToPlace.size() == 0) {
+      this.gameState = GameState.PLAYER_ONE_TURN;
+    }
   }
 
   public ArrayList<int[]> getMissiles() {
